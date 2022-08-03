@@ -23,7 +23,8 @@ int Pokemon_setValorAtaque(ePokemones* this, int valorAtaque);
 
 int Pokemon_filterShinyAndWater(void* pok);
 void Pokemon_mapAtaqueDiaDespejado(void* pok);
-void Pokemon_mapRemoveAtaqueDiaDespejado(void* pok);
+void Pokemon_mapEventoKanto(void* pok);
+int Pokemon_countPokemonToDefeatBoss(void* pok);
 
 void Pokemon_showPokemon(LinkedList* pArrayList, int min, int max);
 void showSimplePokemon(int numero, char nombre[], char tipo[], char tamanio[], char ataqueCargado[], int valorAtaque, int esVarioColor);

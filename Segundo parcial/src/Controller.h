@@ -5,4 +5,5 @@ void showFromTo(LinkedList* pArrayListPassenger, int max);
 void listPokemon(LinkedList* pArrayList);
 int controller_ListPokemon(LinkedList* pArrayList, int max);
 int controller_filterPokemon(LinkedList* pArrayList, int max);
-int controller_mapAtaque(LinkedList* pArrayList, int max);
+int controller_mapAtaque(LinkedList* pArrayList, int max, int option, int* mod1, int* mod2);
+int controller_countPokemons(LinkedList* pArrayList, int max);

@@ -11,6 +11,8 @@ int main()
 	setbuf(stdout, NULL);
     int option = 0;
     int load = -1;
+    int mod1=-1;
+    int mod2=-1;
     LinkedList* listaPokemones = ll_newLinkedList();
     do{
     	puts("------------------------------------MENU------------------------------------");
@@ -18,10 +20,12 @@ int main()
     	puts("2- Eliminar pokemon.");
     	puts("3- Imprimir pokemones.");
     	puts("4- Filtrar de tipo agua.");
-    	puts("5- Mapear ataque cargado.");
-    	puts("6- Salir.");
+    	puts("5- Mapear ataque cargado.(Dia despejado)");
+    	puts("6- Mapear ataque cargado.(Evento Kanto)");
+    	puts("7- Contar pokemons para el Jefe");
+    	puts("8- Salir.");
 		getIntNumber(&option, "Ingrese una opcion del menu:",
-				"Error opcion invalida", 1, 6, 5);
+				"Error opcion invalida", 1, 8, 5);
         switch(option)
         {
             case 1:
@@ -60,7 +64,27 @@ int main()
             case 5:
             	if(load==0)
             	{
-            		controller_mapAtaque(listaPokemones, SHOWMAX);
+            		controller_mapAtaque(listaPokemones, SHOWMAX, 1, &mod1, &mod2);
+            	}
+            	else
+            	{
+            		puts("Aun no se han cargado los datos. Por favor ingreselos desde la primera opcion");
+            	}
+            	break;
+            case 6:
+            	if(load==0)
+            	{
+            		controller_mapAtaque(listaPokemones, SHOWMAX, 2, &mod1, &mod2);
+            	}
+            	else
+            	{
+            		puts("Aun no se han cargado los datos. Por favor ingreselos desde la primera opcion");
+            	}
+            	break;
+            case 7:
+            	if(load==0)
+            	{
+            		controller_countPokemons(listaPokemones, SHOWMAX);
             	}
             	else
             	{
@@ -68,6 +92,6 @@ int main()
             	}
             	break;
         }
-    }while(option != 6);
+    }while(option != 8);
     return 0;
 }

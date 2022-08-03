@@ -153,21 +153,80 @@ void Pokemon_mapAtaqueDiaDespejado(void* pok)
 		}
 	}
 }
-
-void Pokemon_mapRemoveAtaqueDiaDespejado(void* pok)
+/*
+6) Mapear ataque cargado: Con motivo del evento Kanto, los pokemenos que
+cumplan con las siguientes características incrementaron su poder:
+Los pokemones de tipo Bug, Fire y Grass aumentarán su poder un 20%
+siempre y cuando el tamaño sea XL, un 10% si es L y sino un 5 para cualquier otro
+tamaño.
+*/
+void Pokemon_mapEventoKanto(void* pok)
 {
 	ePokemones* pokemon=pok;
 	int ataque;
 	char tipo[25];
+	char tamanio[25];
 
-	if(pok!=NULL && !Pokemon_getValorAtaque(pokemon,&ataque) && !Pokemon_getTipo(pokemon, tipo))
+	if(pok!=NULL && !Pokemon_getValorAtaque(pokemon,&ataque) && !Pokemon_getTipo(pokemon, tipo) && !Pokemon_getTamanio(pokemon, tamanio))
 	{
-		if((strcmp(tipo,"Fire")==0) || (strcmp(tipo,"Ground")==0) || (strcmp(tipo,"Grass")==0))
+		if((strcmp(tipo,"Bug")==0) || (strcmp(tipo,"Fire")==0) || (strcmp(tipo,"Grass")==0))
 		{
-			ataque = ataque * 0.90;
-			Pokemon_setValorAtaque(pok, ataque);
+			if(strcmp(tamanio,"XL")==0)
+			{
+				ataque = ataque * 1.20;
+				Pokemon_setValorAtaque(pok, ataque);
+			}else
+			{
+				if(strcmp(tamanio,"L")==0)
+				{
+					ataque = ataque * 1.10;
+					Pokemon_setValorAtaque(pok, ataque);
+				}else
+				{
+					ataque = ataque * 1.05;
+					Pokemon_setValorAtaque(pok, ataque);
+				}
+			}
 		}
 	}
+}
+/*
+ 7) Batalla pokemon: Nos hemos encontrado con el jefe del team Rocket, Giovanni. El
+malvado jugará su batalla final con Lugia, pokémon de tipo Psíquico. La única forma
+de ganarle será formando un equipo con las siguientes características: un pokémon
+de tipo Fire de tamaño XL, con ataque Lanzallamas y cuyo valor de ataque sea
+superior a 80 o de tipo Water tamaño L, con ataque hidrobomba entre superior a 80.
+Determinar cuántos pokemones cumplen con dichas características y anunciar si
+ganamos la batalla o no. Tener en cuenta que necesitamos mínimo 3 pokemones
+para vencer a este pokémon legendario.
+
+tipo fire
+tamanio xl
+ataque lanzallamas
+valorAtaque >80
+
+water
+L
+Hidrobomba
+>80
+ */
+int Pokemon_countPokemonToDefeatBoss(void* pok)
+{
+	ePokemones* pokemon=pok;
+	char tipo[25];
+	char tamanio[25];
+	char ataqueCargado[50];
+	int ataque;
+	int count=-1;
+
+	if(pok!=NULL && !Pokemon_getTipo(pokemon, tipo) && !Pokemon_getTamanio(pokemon, tamanio) && !Pokemon_getAtaqueCargado(pokemon, ataqueCargado) && !Pokemon_getValorAtaque(pokemon,&ataque))
+	{
+		if(((strcmp(tipo,"Fire")==0) && (strcmp(tamanio,"XL")==0) && (strcmp(ataqueCargado,"Lanzallamas")==0) && ataque>80) || ((strcmp(tipo,"Water")==0) && (strcmp(tamanio,"L")==0) && (strcmp(ataqueCargado,"Hidrobomba")==0) && ataque>80))
+		{
+			count=1;
+		}
+	}
+	return count;
 }
 
 void Pokemon_showPokemon(LinkedList* pArrayList, int min, int max)

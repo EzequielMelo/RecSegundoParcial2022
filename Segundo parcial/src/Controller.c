@@ -215,17 +215,56 @@ int controller_filterPokemon(LinkedList* pArrayList, int max)
 	return rtn;
 }
 
-int controller_mapAtaque(LinkedList* pArrayList, int max)
+int controller_mapAtaque(LinkedList* pArrayList, int max, int option, int* mod1, int* mod2)
 {
-	LinkedList* listaPokemonAuxiliar = ll_newLinkedList();
 	int rtn=-1;
 
 	if(pArrayList != NULL)
 	{
-		listaPokemonAuxiliar = ll_clone(pArrayList);
-		ll_map(listaPokemonAuxiliar, Pokemon_mapAtaqueDiaDespejado);
-		controller_ListPokemon(listaPokemonAuxiliar, max);
-		ll_deleteLinkedList(listaPokemonAuxiliar);
+		if(option==1)
+		{
+			if(*mod1==-1)
+			{
+				ll_map(pArrayList, Pokemon_mapAtaqueDiaDespejado);
+				puts("Mejoras aplicadas...");
+				*mod1=0;
+			}else
+			{
+				puts("No se puede volver a aplicar la mejora por dia despejado");
+			}
+
+		}else
+		{
+			if(*mod2==-1)
+			{
+				ll_map(pArrayList, Pokemon_mapEventoKanto);
+				puts("Mejoras aplicadas...");
+				*mod2=0;
+			}else
+			{
+				puts("No se puede volver a aplicar la mejora por evento kanto");
+			}
+		}
+		rtn=0;
+	}
+	return rtn;
+}
+
+int controller_countPokemons(LinkedList* pArrayList, int max)
+{
+	int rtn=-1;
+	int pokemonsParaElBoss;
+
+	if(pArrayList != NULL)
+	{
+		pokemonsParaElBoss=ll_count(pArrayList, Pokemon_countPokemonToDefeatBoss);
+		if(pokemonsParaElBoss>=3)
+		{
+			printf("Disponemos de %d Pokemons en nuestra mochila para vencer al Boss\n!Hemos ganado\n",pokemonsParaElBoss);
+		}else
+		{
+			printf("No disponemos de Pokemons suficientes para la batalla %d\n", pokemonsParaElBoss);
+		}
 		rtn=0;
 	}
 	return rtn;
